@@ -1,0 +1,11 @@
+
+{
+"articles": [
+  {"title": {{content.title}},
+"thumb_media_id": {{content.thumb_media_id}},
+"author": {{content.author}},
+"digest": {{content.digest}},
+"show_cover_pic": 0,
+"content": "<p>&nbsp; &nbsp;&nbsp;<a class=\"weapp_text_link\" data-miniprogram-appid=\"wx734c1ad7b3562129\" data-miniprogram-path=\"{{content.link_url}}\" data-miniprogram-nickname=\"大众点评美食电影运动旅游门票\" href=\"\">hello<\/a><\/p>"
+]
+}
