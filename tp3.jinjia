@@ -1,0 +1,6 @@
+{"title": "{{content.title[0]}}",
+"thumb_media_id": "{{content.thumb_media_id[0]}}",
+"author": "{{content.author[0]}}",
+"digest": "{{content.digest[0]}}",
+"show_cover_pic": 0,
+"content": "{% for url in content.url_links %}<p style=\"white-space: normal;\"><a class=\"weapp_image_link\" data-miniprogram-appid=\"wx734c1ad7b3562129\" data-miniprogram-path={{content.url_links[loop.index0]}} data-miniprogram-nickname=\"大众点评美食电影运动旅游门票\" href=\"\" href=\"\"><img class=\"\" data-ratio=\"0.6732394366197183\" data-s=\"300,640\" data-src={{content.img_links[loop.index0]}} data-type=\"png\" data-w=\"710\"></a></p>{% endfor %} <p>&nbsp;&nbsp;</p>"},

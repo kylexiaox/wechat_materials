@@ -8,12 +8,16 @@
 @file: excel_util.py 
 @time: 16/5/18 01:22 
 """
+import sys
+from json import *
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 import xlrd
 
-def format_tp1(filepath):
+def format_tp(filepath):
     """
-    对模板1进行封装
+    对excel结构进行封装
     :param filepath:
     :return:
     """
@@ -24,16 +28,19 @@ def format_tp1(filepath):
     cursor = 1
     current_articles_index = 0
     while True:
-        print table.cell(cursor,0).value
-        if current_articles_index != table.cell(cursor,0).value:
-            #新的一片article
+        if current_articles_index != table.cell(cursor, 0).value:
+            #新的一篇article
             articles = []
             content.append(articles)
-            current_articles_index = table.cell(cursor,0).value
+            current_articles_index = table.cell(cursor, 0).value
         article = {}
         rows = table.row(cursor)
-        for i in range(1,table.ncols):
-            article[indexs[i].value] = rows[i].value
+        for i in range(1, table.ncols):
+            key = indexs[i].value
+            if key == 'article' or 'template':
+                article[key] = str(rows[i].value).encode('utf-8').strip().split(',')
+            else:
+                article[key] = JSONEncoder.encode(str(rows[i].value).encode('utf-8').strip()).split(',')
         articles.append(article)
         if cursor < table.nrows-1:
             cursor = cursor+1
@@ -42,9 +49,7 @@ def format_tp1(filepath):
     return content
 
 
-
-
-
-
 if __name__ == '__main__':
-    format_tp1('tp1.xlsx')
+    format_tp('tp1.xlsx')
+
+

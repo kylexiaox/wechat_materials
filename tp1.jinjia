@@ -1,0 +1,7 @@
+{"title": "{{content.title[0]}}",
+"thumb_media_id": "{{content.thumb_media_id[0]}}",
+"author": "{{content.author[0]}}",
+"digest": "{{content.digest[0]}}",
+"show_cover_pic": 0,
+"content": "<p><a href=\"{{content.url_links[0]}}\" target=\"_blank\"><img class=\"\" data-copyright=\"0\" data-ratio=\"0.5555555555555556\" data-s=\"300,640\" data-src=\"{{content.img_links[0]}}\" data-type=\"jpeg\" data-w=\"360\" style=\"\"  \/><\/a><\/p><p><br  \/><\/p>"
+},

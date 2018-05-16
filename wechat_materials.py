@@ -9,22 +9,24 @@
 @time: 16/5/18 01:22
 """
 
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+import excel_util
 import pycurl
 import codecs
 from jinja2 import Template
-
-import json
-#from urllib import urlencode
+from json import *
 from StringIO import StringIO
 
 
 
 # 微信公众号access_token
-__access_token = u'abc'
+__access_token = u'9_XYKcHiKl_6fugF4KorgIy7eD1ySvo0g_e1zGlTXjscPeu3k7-3ZjpglHPo28I12jqFveCOsJbOtaijZvVe0mACOHyE0Sinc3zBDqgPvXtmyBjvroc0Z2DaAqWhhKdGFWfJpi6Aa1emb5Be30PNOdACADBC'
 
 def _post_data(url,data):
     #
-    # 基础方法，给微信接口发请求
+    # 基础POST方法，给微信接口发请求
     #
     url = url+__access_token
     buffer = StringIO()
@@ -42,14 +44,14 @@ def _post_data(url,data):
 
 
 def _get_meida(media_id):
-    url = 'https://api.weixin.qq.com/cgi-bin/material/get_material?access_token='+__access_token
+    url = u'https://api.weixin.qq.com/cgi-bin/material/get_material?access_token='
     post_data = '{"media_id":"'+media_id+'"}'
     return _post_data(url, post_data)
 
 
 def add_media(media):
-    url = 'https://api.weixin.qq.com/cgi-bin/material/add_news?access_token='
-    res = _post_data(url, media.encode('utf-8').strip())
+    url = u'https://api.weixin.qq.com/cgi-bin/material/add_news?access_token='
+    res = _post_data(url, media.strip())
     try:
         media_id = json.loads(res)[u'media_id']
         result = media_id
@@ -59,14 +61,20 @@ def add_media(media):
     return result
 
 
-def get_temp(temp_id):
-    f = codecs.open('template_'+str(temp_id)+'.jinjia','r','utf8')
+def _get_temp(temp):
+    f = codecs.open(str(temp)+'.jinjia', 'r', 'utf8')
     fstring = f.read()
     return Template(fstring)
 
-def assemble_article(template,content):
-    media = template.render(content=content)
-    return media
+def assemble_article(articles):
+    r = "{\"articles\": ["
+    end = "]}"
+    for article in articles:
+        template = _get_temp(article['template'][0])
+        mediastr = template.render(content=article)
+        r = r + mediastr
+    r = r.strip(',')+end
+    return r
 
 
 def get_img_media_id(img):
@@ -79,9 +87,11 @@ def get_img_media_id(img):
 
 
 if __name__ == '__main__':
-    #print get_meida("rBbdElSo6RPHf5UG-WXGoAJNxjDSzL0yil_LtwWA4KI")
-    #rBbdElSo6RPHf5UG-WXGoIwuWxaBvtG_hZ1MOGbXFu4
-    print _get_meida('rBbdElSo6RPHf5UG-WXGoIwuWxaBvtG_hZ1MOGbXFu4')
-    #content = {'title': 'abc', 'thumb_media_id': 'rBbdElSo6RPHf5UG-WXGoIwuWxaBvtG_hZ1MOGbXFu4', 'author': '','digest': 'cde','link_url':'www.baidu.com'}
-    #add_media(assemble_article(get_temp(1),content))
+    print _get_meida("xPxyLKFXP3ppHr6qnyMCuTfUqf4JEW7I1JDBbYDYonI")
+
+    contents = excel_util.format_tp('config.xlsx')
+    for content in contents:
+        post_data = assemble_article(content)
+        add_media(post_data)
+
 
